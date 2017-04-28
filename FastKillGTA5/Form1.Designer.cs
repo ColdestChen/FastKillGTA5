@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(284, 107);
             this.Name = "myForm";
             this.Text = "Fast Kill GTA5";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.myForm_FormClosing);
             this.ResumeLayout(false);
 
         }
