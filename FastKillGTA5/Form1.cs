@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace FastKillGTA5
 {
     public partial class myForm : Form
@@ -28,37 +27,55 @@ namespace FastKillGTA5
             WinKey = 8
         }
 
+        bool isOpen = true;
+
         public myForm()
         {
             InitializeComponent();
-            int id = 0;
-            
-            RegisterHotKey(this.Handle, id, (int)KeyModifier.Control, Keys.F8.GetHashCode());            
+            // Ctrl + F8
+            RegisterHotKey(this.Handle, 0, (int)KeyModifier.Control, Keys.F8.GetHashCode());            
         }
 
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
-
-            if (m.Msg == 0x0312)
-            {                
-                //Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);                  // The key of the hotkey that was pressed.
-                //KeyModifier modifier = (KeyModifier)((int)m.LParam & 0xFFFF);       // The modifier of the hotkey that was pressed.
-                int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
-                if (id == 0)
-                {                    
-                    Process[] gta5 = Process.GetProcessesByName("GTA5");
-                    foreach (Process p in gta5)
-                    { 
-                        p.Kill();
-                    }
-                } 
+            if (m.Msg == 0x0312 && isOpen == true)
+            {
+                switch (m.WParam.ToInt32())
+                {
+                    case 0:                        
+                        Process[] ps = Process.GetProcessesByName("GTA5");
+                        foreach (Process p in ps)
+                        {
+                            p.Kill();                            
+                        }
+                        break;
+                    default:
+                        break;
+                }                
             }
         }
 
         private void myForm_FormClosing(object sender, FormClosingEventArgs e)
         {            
             UnregisterHotKey(this.Handle, 0);
+        }
+
+        private void btnSwitch_Click(object sender, EventArgs e)
+        {
+            if(isOpen == true)
+            {
+                btnSwitch.Text = "Start";
+                btnSwitch.ForeColor = Color.Blue;
+            }
+            else
+            {
+                btnSwitch.Text = "Stop";
+                btnSwitch.ForeColor = Color.Red;
+            }
+            
+            // ^ --> XOR
+            isOpen ^= true;
         }
     }
 
