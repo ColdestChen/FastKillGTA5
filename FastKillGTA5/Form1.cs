@@ -43,16 +43,23 @@ namespace FastKillGTA5
             {
                 switch (m.WParam.ToInt32())
                 {
-                    case 0:                        
-                        Process[] ps = Process.GetProcessesByName("GTA5");
-                        foreach (Process p in ps)
-                        {
-                            p.Kill();                            
-                        }
+                    case 0:
+                        killGTA5();
                         break;
                     default:
                         break;
                 }                
+            }
+        }
+
+        private void killGTA5()
+        {
+            Process[] ps = Process.GetProcessesByName("GTA5");
+            foreach (Process p in ps)
+            {                    
+                p.Kill();                         
+                p.WaitForExit();
+                // https://msdn.microsoft.com/en-us/library/windows/desktop/system.diagnostics.process.waitforexit(v=vs.100)
             }
         }
 
