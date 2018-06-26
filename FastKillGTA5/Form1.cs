@@ -18,6 +18,8 @@ namespace FastKillGTA5
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+        private const int KEY_CTRL_F8 = 0;
+
         enum KeyModifier
         {
             None = 0,
@@ -33,7 +35,7 @@ namespace FastKillGTA5
         {
             InitializeComponent();
             // Ctrl + F8
-            RegisterHotKey(this.Handle, 0, (int)KeyModifier.Control, Keys.F8.GetHashCode());            
+            RegisterHotKey(this.Handle, KEY_CTRL_F8, (int)KeyModifier.Control, Keys.F8.GetHashCode());            
         }
 
         protected override void WndProc(ref Message m)
@@ -43,7 +45,7 @@ namespace FastKillGTA5
             {
                 switch (m.WParam.ToInt32())
                 {
-                    case 0:
+                    case KEY_CTRL_F8:
                         killGTA5();
                         break;
                     default:
@@ -65,7 +67,7 @@ namespace FastKillGTA5
 
         private void myForm_FormClosing(object sender, FormClosingEventArgs e)
         {            
-            UnregisterHotKey(this.Handle, 0);
+            UnregisterHotKey(this.Handle, KEY_CTRL_F8);
         }
 
         private void btnSwitch_Click(object sender, EventArgs e)
